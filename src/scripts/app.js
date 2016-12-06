@@ -14,7 +14,13 @@ var charGeometry = new THREE.BoxGeometry(.6, .9, 0.2);
 var charMaterial = new THREE.MeshBasicMaterial({ color: 0xA0A0A0 })
 var chara = new THREE.Mesh(charGeometry, charMaterial);
 scene.add(chara);
-chara.position.set(-4.7, -1.2, 0.7);
+var startingXPos = -2.5
+
+var charXPosition = {
+  currentX : startingXPos,
+  nextX:startingXPos
+}
+chara.position.set(charXPosition.currentX, -1.2, 0.7);
 
 var jumpRange = {
   upperBound: 1000,
@@ -22,6 +28,7 @@ var jumpRange = {
   currentPos: 0,
   isJumping: false
 }
+
 
 var groundGeometry = new THREE.BoxGeometry(12,0.3,1);
 var groundMaterial = new THREE.MeshBasicMaterial( { color: 0xFFFFFF } );
@@ -52,21 +59,21 @@ var render = function () {
 
   window.addEventListener("keydown", function(event){
     if (event.keyCode === 39){
-      chara.position.x += 0.0013
+        charXPosition.nextX += .0013
       // console.log(chara.position.x)
       if(chara.position.x >= 4.9){
-        chara.position.x = 4.9;
+        charXPosition.nextX = 4.9
       }
     }else if (event.keyCode === 37){
-      chara.position.x += -0.0013
+      charXPosition.nextX += -0.0013
       // console.log(chara.position.x)
       if(chara.position.x <= -4.795999999999992){
-        chara.position.x = -4.795999999999992;
+        charXPosition.nextX= -4.795999999999992;
       }
     } else if (event.keyCode === 38){
       // console.log(chara.position.y )
       // chara.position.y = -0.4 + 1*Math.sin(dtime/1000);
-      console.log(chara.position.y)
+      // console.log(chara.position.y)
       jumpRange.isJumping = true
     }
 })
@@ -101,6 +108,14 @@ var render = function () {
     prevY = chara.position.y
   }
 
+
+  if(chara.position.x  < charXPosition.nextX){
+    chara.position.x += .01
+  }
+
+  if(chara.position.x  > charXPosition.nextX){
+    chara.position.x -= .01
+  }
 
 
 
