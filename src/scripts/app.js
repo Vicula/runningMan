@@ -15,10 +15,10 @@ var groundMaterial = new THREE.MeshBasicMaterial( { color: 0xFFFFFF } );
 var ground = new THREE.Mesh( groundGeometry, groundMaterial );
 scene.add( ground );
 ground.position.set(0, -1, 0);
-var light = new THREE.PointLight( 0xFFFF00 );
+var light = new THREE.PointLight( 0x000000 );
 light.position.set( 10, 0, 10 );
 scene.add( light );
-renderer.setClearColor( 0xdddddd, 1);
+renderer.setClearColor( 0xEEEEEE, 1);
 
 camera.position.z = 5;
 
