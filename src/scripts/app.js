@@ -8,6 +8,9 @@ var scene = new THREE.Scene();
 
 var camera = new THREE.PerspectiveCamera( 75, SCREEN_WIDTH/SCREEN_HEIGHT, 0.1, 1000 );
 
+var ambient = new THREE.AmbientLight( 0x444444 );
+scene.add( ambient );
+
 
 var renderer = new THREE.WebGLRenderer();
 renderer.setSize( window.innerWidth, window.innerHeight );
@@ -23,16 +26,19 @@ document.body.appendChild( renderer.domElement );
 // scene.add( cube );
 
 var charGeometry = new THREE.BoxGeometry(.6, .9, 0.2);
-var charMaterial = new THREE.MeshLambertMaterial({ color: 0xEEEEEE })
+var charMaterial = new THREE.MeshPhongMaterial({ color: 0xCCCCCC })
 var chara = new THREE.Mesh(charGeometry, charMaterial);
 scene.add(chara);
+
+chara.castShadow = true;
+// chara.receiveShadow = true;
 var startingXPos = -2.5
 
 var charXPosition = {
   currentX : startingXPos,
   nextX:startingXPos
 }
-chara.position.set(charXPosition.currentX, -1.2, 0.7);
+chara.position.set(charXPosition.currentX, -2.3, 0.2);
 
 var jumpRange = {
   upperBound: 1000,
@@ -49,13 +55,15 @@ var movement = {
 }
 
 var groundGeometry = new THREE.BoxGeometry(12,0.3,1);
-var groundMaterial = new THREE.MeshBasicMaterial( { color: 0xFFFFFF } );
+var groundMaterial = new THREE.MeshLambertMaterial( { color: 0xFFFFFF } );
 var ground = new THREE.Mesh( groundGeometry, groundMaterial );
+ground.castShadow = false;
+ground.receiveShadow = true;
 scene.add( ground );
-ground.position.set(0, -2, 0);
+ground.position.set(0, -2.9, 0);
 
 var SHADOW_MAP_WIDTH = 2048, SHADOW_MAP_HEIGHT = 1024;
-var light = new THREE.SpotLight( 0xAAAAAA, 1, 0, Math.PI / 2 );
+var light = new THREE.SpotLight( 0xFFFFFF, 1, 0, Math.PI / 2 );
 // var light = new THREE.SpotLight( 0xAAAAAA );
 light.position.set( 10, 0, 10 );
 light.target.position.set( chara.position );
@@ -72,7 +80,7 @@ renderer.setClearColor( 0xEEEEEE, 1);
 
 camera.position.z = 5;
 
-let minY = -1.2,
+let minY = -2.3,
     prevY = minY,
     maxFound = false,
     minFound = false,
@@ -204,14 +212,3 @@ var daResize = function(){
 }
 
 window.addEventListener('resize', daResize )
-
-
-
-
-
-// export default {
-//   SCREEN_WIDTH,
-//   SCREEN_HEIGHT,
-//   camera,
-//   rend
-// }
