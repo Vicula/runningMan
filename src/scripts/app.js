@@ -20,13 +20,15 @@ renderer.shadowMap.type = THREE.PCFShadowMap;
 
 document.body.appendChild( renderer.domElement );
 
+
+
 // var geometry = new THREE.BoxGeometry( 1, 1, 2 );
 // var material = new THREE.MeshBasicMaterial( { color: 0xBFBFBF } );
 // var cube = new THREE.Mesh( geometry, material );
 // scene.add( cube );
 
 var charGeometry = new THREE.BoxGeometry(.6, .9, 0.2);
-var charMaterial = new THREE.MeshPhongMaterial({ color: 0xCCCCCC })
+var charMaterial = new THREE.MeshPhongMaterial({ color: 0xC0C0C0 })
 var chara = new THREE.Mesh(charGeometry, charMaterial);
 scene.add(chara);
 
@@ -65,7 +67,7 @@ ground.position.set(0, -2.9, 0);
 var SHADOW_MAP_WIDTH = 2048, SHADOW_MAP_HEIGHT = 1024;
 var light = new THREE.SpotLight( 0xFFFFFF, 1, 0, Math.PI / 2 );
 // var light = new THREE.SpotLight( 0xAAAAAA );
-light.position.set( 10, 0, 10 );
+light.position.set( 4, 2, 10 );
 light.target.position.set( chara.position );
 
 light.castShadow = true;
@@ -85,6 +87,21 @@ let minY = -2.3,
     maxFound = false,
     minFound = false,
     maxY
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 var render = function () {
