@@ -1,3 +1,8 @@
+
+
+
+
+
 var scene = new THREE.Scene();
 var camera = new THREE.PerspectiveCamera( 75, window.innerWidth/window.innerHeight, 0.1, 1000 );
 
@@ -11,7 +16,7 @@ document.body.appendChild( renderer.domElement );
 // scene.add( cube );
 
 var charGeometry = new THREE.BoxGeometry(.6, .9, 0.2);
-var charMaterial = new THREE.MeshBasicMaterial({ color: 0xA0A0A0 })
+var charMaterial = new THREE.MeshLambertMaterial({ color: 0xEEEEEE })
 var chara = new THREE.Mesh(charGeometry, charMaterial);
 scene.add(chara);
 var startingXPos = -2.5
@@ -44,7 +49,7 @@ var groundMaterial = new THREE.MeshBasicMaterial( { color: 0xFFFFFF } );
 var ground = new THREE.Mesh( groundGeometry, groundMaterial );
 scene.add( ground );
 ground.position.set(0, -2, 0);
-var light = new THREE.PointLight( 0x000000 );
+var light = new THREE.PointLight( 0xAAAAAA );
 light.position.set( 10, 0, 10 );
 scene.add( light );
 renderer.setClearColor( 0xEEEEEE, 1);
