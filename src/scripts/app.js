@@ -5,10 +5,10 @@ var renderer = new THREE.WebGLRenderer();
 renderer.setSize( window.innerWidth, window.innerHeight );
 document.body.appendChild( renderer.domElement );
 
-var geometry = new THREE.BoxGeometry( 1, 1, 2 );
-var material = new THREE.MeshBasicMaterial( { color: 0xBFBFBF } );
-var cube = new THREE.Mesh( geometry, material );
-scene.add( cube );
+// var geometry = new THREE.BoxGeometry( 1, 1, 2 );
+// var material = new THREE.MeshBasicMaterial( { color: 0xBFBFBF } );
+// var cube = new THREE.Mesh( geometry, material );
+// scene.add( cube );
 
 var charGeometry = new THREE.BoxGeometry(.6, .9, 0.2);
 var charMaterial = new THREE.MeshBasicMaterial({ color: 0xA0A0A0 })
@@ -27,6 +27,15 @@ var jumpRange = {
   lowerBound: 0,
   currentPos: 0,
   isJumping: false
+}
+
+
+var movement = {
+  walking: false,
+  keysUp: false,
+  keysDown: false,
+  keysLeft: false,
+  keysRight: false
 }
 
 
@@ -56,16 +65,22 @@ var render = function () {
 	// cube.rotation.y += 0.0225;
 	// cube.rotation.z += 0.0175;
 
+  let thaX = charXPosition.nextX
+
 
   window.addEventListener("keydown", function(event){
     if (event.keyCode === 39){
-        charXPosition.nextX += .0013
+        charXPosition.nextX += .1
+        movement.walking = true
+        movement.keysRight = true
       // console.log(chara.position.x)
-      if(chara.position.x >= 4.9){
-        charXPosition.nextX = 4.9
+      if(chara.position.x >= 4.8){
+        charXPosition.nextX = 4.8
       }
     }else if (event.keyCode === 37){
-      charXPosition.nextX += -0.0013
+      charXPosition.nextX += -.1
+      movement.walking = true
+      movement.keysLeft = true
       // console.log(chara.position.x)
       if(chara.position.x <= -4.795999999999992){
         charXPosition.nextX= -4.795999999999992;
@@ -75,14 +90,30 @@ var render = function () {
       // chara.position.y = -0.4 + 1*Math.sin(dtime/1000);
       // console.log(chara.position.y)
       jumpRange.isJumping = true
+      movement.walking = true
+      movement.keysUp = true
     }
+})
+
+window.addEventListener('keyup', function(e){
+
+
+  if(!movement.keysDown && !movement.keysLeft &&
+     !movement.keysUp && !movement.keysRighy){
+    movement.walking = false
+  }
+
+  movement.keysDown = false
+  movement.keysUp = false
+  movement.keysLeft = false
+  movement.keysRight = false
 })
 
 	if(jumpRange.isJumping){
 
     jumpRange.currentPos++
 
-    let charaPositionYCalc = minY + 1*Math.sin(jumpRange.currentPos/10)
+    let charaPositionYCalc = minY + 2.5*Math.sin(jumpRange.currentPos/10)
 
 
     if(typeof maxY !== 'number') maxY = charaPositionYCalc
@@ -108,13 +139,23 @@ var render = function () {
     prevY = chara.position.y
   }
 
+  if(!movement.walking){
+    charXPosition.nextX = chara.position.x
 
-  if(chara.position.x  < charXPosition.nextX){
-    chara.position.x += .01
-  }
+  } else {
+    if(chara.position.x  < charXPosition.nextX){
+      chara.position.x += .1
+      if(chara.position.x >= 4.8){
+        chara.position.x = 4.8
+      }
+    }
 
-  if(chara.position.x  > charXPosition.nextX){
-    chara.position.x -= .01
+    if(chara.position.x  > charXPosition.nextX){
+      chara.position.x -= .1
+      if(chara.position.x <= -4.8){
+        chara.position.x = -4.8
+      }
+    }
   }
 
 
