@@ -1,13 +1,20 @@
 
+import {handleWindowResize} from './utilities.js'
 
-
-
+var SCREEN_WIDTH = window.innerWidth;
+var SCREEN_HEIGHT = window.innerHeight;
 
 var scene = new THREE.Scene();
-var camera = new THREE.PerspectiveCamera( 75, window.innerWidth/window.innerHeight, 0.1, 1000 );
+
+var camera = new THREE.PerspectiveCamera( 75, SCREEN_WIDTH/SCREEN_HEIGHT, 0.1, 1000 );
+
 
 var renderer = new THREE.WebGLRenderer();
 renderer.setSize( window.innerWidth, window.innerHeight );
+
+renderer.shadowMap.enabled = true;
+renderer.shadowMap.type = THREE.PCFShadowMap;
+
 document.body.appendChild( renderer.domElement );
 
 // var geometry = new THREE.BoxGeometry( 1, 1, 2 );
@@ -33,8 +40,6 @@ var jumpRange = {
   currentPos: 0,
   isJumping: false
 }
-
-
 var movement = {
   walking: false,
   keysUp: false,
@@ -43,14 +48,25 @@ var movement = {
   keysRight: false
 }
 
-
 var groundGeometry = new THREE.BoxGeometry(12,0.3,1);
 var groundMaterial = new THREE.MeshBasicMaterial( { color: 0xFFFFFF } );
 var ground = new THREE.Mesh( groundGeometry, groundMaterial );
 scene.add( ground );
 ground.position.set(0, -2, 0);
-var light = new THREE.PointLight( 0xAAAAAA );
+
+var SHADOW_MAP_WIDTH = 2048, SHADOW_MAP_HEIGHT = 1024;
+var light = new THREE.SpotLight( 0xAAAAAA, 1, 0, Math.PI / 2 );
+// var light = new THREE.SpotLight( 0xAAAAAA );
 light.position.set( 10, 0, 10 );
+light.target.position.set( chara.position );
+
+light.castShadow = true;
+
+light.shadow = new THREE.LightShadow( new THREE.PerspectiveCamera( 50, 1, 0.1, 1000 ) );
+light.shadow.bias = 0.0001;
+light.shadow.mapSize.width = SHADOW_MAP_WIDTH;
+light.shadow.mapSize.height = SHADOW_MAP_HEIGHT;
+
 scene.add( light );
 renderer.setClearColor( 0xEEEEEE, 1);
 
@@ -102,16 +118,30 @@ var render = function () {
 
 window.addEventListener('keyup', function(e){
 
+  switch (e.keyCode) {
+    case 39:
+      movement.keysRight = false
+      break;
+    case 37:
+      movement.keysLeft = false
+      break;
+    case 38:
+      movement.keysUp = false
+      break;
+    case 40:
+      movement.keysDown = false
+      break;
+    default:
+      //no-op
+      break;
+  }
+
 
   if(!movement.keysDown && !movement.keysLeft &&
-     !movement.keysUp && !movement.keysRighy){
+     !movement.keysUp && !movement.keysRight){
     movement.walking = false
   }
 
-  movement.keysDown = false
-  movement.keysUp = false
-  movement.keysLeft = false
-  movement.keysRight = false
 })
 
 	if(jumpRange.isJumping){
@@ -169,3 +199,19 @@ window.addEventListener('keyup', function(e){
 };
 
 render();
+var daResize = function(){
+  handleWindowResize(camera, renderer)
+}
+
+window.addEventListener('resize', daResize )
+
+
+
+
+
+// export default {
+//   SCREEN_WIDTH,
+//   SCREEN_HEIGHT,
+//   camera,
+//   rend
+// }
