@@ -10,7 +10,6 @@
     "watch": "npm run watch-js && npm run watch-css && echo '\n\n===== watching js and scss files in src/, writing changes to public/ =====\n\n'&",
     "watch-js": "./node_modules/.bin/watchify src/scripts/app.js --debug --verbose --transform babelify -o public/js/app.js&",
     "watch-css": "./node_modules/.bin/node-sass -w --output-style compressed src/styles/style.scss public/css/style.css&"
-
   },
   "browserify": {
     "transform": [
@@ -53,6 +52,7 @@
     "font-awesome": "^4.7.0",
     "jquery": "2.2.4",
     "react": "^15.1.0",
-    "react-dom": "^15.1.0"
+    "react-dom": "^15.1.0",
+    "three-obj-loader": "^1.0.2"
   }
 }

@@ -1,5 +1,8 @@
 
 import {handleWindowResize} from './utilities.js'
+const OBJLoader = require('three-obj-loader')
+
+OBJLoader(THREE)
 
 var SCREEN_WIDTH = window.innerWidth;
 var SCREEN_HEIGHT = window.innerHeight;
@@ -109,6 +112,56 @@ head.rotation.x = 1.9;
 head.rotation.y = 2.8;
 head.rotation.z = 1.3
 
+var daTexture2 = new THREE.MeshPhongMaterial( { specular: 0x6a6a6a, shading: THREE.FlatShading, vertexColors: THREE.VertexColors } );
+var daTexture = new THREE.Texture()
+
+var manager = new THREE.LoadingManager();
+manager.onProgress = function ( item, loaded, total ) {
+  console.log( item, loaded, total );
+};
+
+var deer
+//
+// var loader = new THREE.JSONLoader(manager);
+// loader.load('../images/deer.json', function(obj, mat){
+//
+//   var objMats = new THREE.MultiMaterial( mat );
+//   var object = new THREE.Mesh( obj, objMats );
+//
+//
+//
+//   console.log(object)
+//   // object.material.visible = true;
+// 	scene.add( object );
+//
+// })
+
+var loader = new THREE.OBJLoader(manager);
+loader.load( '../images/Deer.obj', function ( object ) {
+object.traverse( function ( child ) {
+
+  if ( child instanceof THREE.Mesh ) {
+    child.material.map = daTexture;
+    // child.material.map = daTexture2
+    child.material.color.r = 60
+    child.material.color.g = 60
+    child.material.color.b = 60
+
+    // console.log(child.material)
+    // console.log(chara)
+	}
+} );
+  console.log(object)
+  object.scale.x = .003
+  object.scale.y = .003
+  object.scale.z =.003
+  object.castShadow = true
+	object.position.set(-4, -2.75, 0.2);
+  object.rotation.y = 1.6
+  deer = object
+	scene.add( object );
+});
+
 
 
 
@@ -121,6 +174,7 @@ var render = function () {
   // head.rotation.x += 0.02;
 	// head.rotation.y += 0.0225;
 	// head.rotation.z += 0.0175;
+  // deer.rotation.y += 0.02
 
   let thaX = charXPosition.nextX
 
