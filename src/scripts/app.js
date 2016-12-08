@@ -27,14 +27,14 @@ document.body.appendChild( renderer.domElement );
 // var cube = new THREE.Mesh( geometry, material );
 // scene.add( cube );
 
-var charGeometry = new THREE.BoxGeometry(.6, .9, 0.2);
-var charMaterial = new THREE.MeshPhongMaterial({ color: 0xC0C0C0 })
+var charGeometry = new THREE.ConeGeometry( .2, .7, 50, 1,false,10,2*3.14 );
+var charMaterial = new THREE.MeshLambertMaterial({ color: 0x6a6a6a })
 var chara = new THREE.Mesh(charGeometry, charMaterial);
 scene.add(chara);
 
 chara.castShadow = true;
 // chara.receiveShadow = true;
-var startingXPos = -2.5
+var startingXPos = -1.2
 
 var charXPosition = {
   currentX : startingXPos,
@@ -67,7 +67,7 @@ ground.position.set(0, -2.9, 0);
 var SHADOW_MAP_WIDTH = 2048, SHADOW_MAP_HEIGHT = 1024;
 var light = new THREE.SpotLight( 0xFFFFFF, 1, 0, Math.PI / 2 );
 // var light = new THREE.SpotLight( 0xAAAAAA );
-light.position.set( 4, 2, 10 );
+light.position.set( 5, 3, 10 );
 light.target.position.set( chara.position );
 
 light.castShadow = true;
@@ -90,13 +90,24 @@ let minY = -2.3,
 
 
 
+//
+// var geometry = new THREE.ConeGeometry( .2, .7, 50, 1,false,10,2*3.14 );
+// var material = new THREE.MeshLambertMaterial( { color: 0x6a6a6a } );
+// var cone = new THREE.Mesh( geometry, material );
+// scene.add( cone );
+// cone.position.set(-1.2, -2.3, 0.2);
+// cone.castShadow = true;
 
 
 
-
-
-
-
+var headGeometry = new THREE.ConeGeometry( .15, .5, 3, 1,false,10,2*3.14 );
+var headMaterial = new THREE.MeshLambertMaterial( { color: 0x6a6a6a } );
+var head = new THREE.Mesh(headGeometry, headMaterial);
+scene.add(head)
+head.position.set(-1.01, -2.15, 0.22);
+head.rotation.x = 1.9;
+head.rotation.y = 2.8;
+head.rotation.z = 1.3
 
 
 
@@ -107,9 +118,9 @@ let minY = -2.3,
 var render = function () {
   requestAnimationFrame( render );
 
-  // cube.rotation.x += 0.02;
-	// cube.rotation.y += 0.0225;
-	// cube.rotation.z += 0.0175;
+  // head.rotation.x += 0.02;
+	// head.rotation.y += 0.0225;
+	// head.rotation.z += 0.0175;
 
   let thaX = charXPosition.nextX
 
@@ -204,17 +215,32 @@ window.addEventListener('keyup', function(e){
 
   } else {
     if(chara.position.x  < charXPosition.nextX){
-      chara.position.x += .1
+      // chara.position.x += .1
+      // head.position.x +=.1
+      // if(chara.position.x >= 4.8){
+      //   chara.position.x = 4.8
+      // }
       if(chara.position.x >= 4.8){
-        chara.position.x = 4.8
+
+      }else {
+        chara.position.x += .1
+        head.position.x +=.1
       }
     }
 
     if(chara.position.x  > charXPosition.nextX){
-      chara.position.x -= .1
+      // chara.position.x -= .1
+      //   head.position.x -=.1
+      // if(chara.position.x <= -4.8){
+      //   chara.position.x = -4.8
+      // }
       if(chara.position.x <= -4.8){
-        chara.position.x = -4.8
+
+      }else {
+        chara.position.x -= .1
+        head.position.x -=.1
       }
+
     }
   }
 
